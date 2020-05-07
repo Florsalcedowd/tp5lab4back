@@ -37,7 +37,7 @@ public class InstrumentoController extends ControllerGenerico<Instrumento, Instr
 	@Autowired
     private UploadService uploadFileService;
 	
-	private static final String fileBasePath = "./src//main//resources//images//";
+	private static final String fileBasePath = ".//src//main//resources//images//";
 
     @PostMapping("/images")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
