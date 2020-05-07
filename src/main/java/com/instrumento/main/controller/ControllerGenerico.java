@@ -24,12 +24,11 @@ public class ControllerGenerico <E, S extends IservicioGenerico<E>> {
 	@Autowired	
 	protected S service;
 
-	/*@GetMapping("/")
+	@GetMapping("/all")
 	@Transactional
 	public ResponseEntity<?> getAll(){
 		
 		try {
-			System.out.println("entre al controler");
 			return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
 			
 		} catch (Exception e) {
@@ -39,7 +38,7 @@ public class ControllerGenerico <E, S extends IservicioGenerico<E>> {
 			
 		}
 		
-	}*/
+	}
 	
 	@GetMapping("/count")
 	@Transactional
@@ -65,7 +64,7 @@ public class ControllerGenerico <E, S extends IservicioGenerico<E>> {
 	
 	@GetMapping("/")
 	@Transactional
-	public ResponseEntity<?> getAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value =  "size", defaultValue = "10") int size){
+	public ResponseEntity<?> getAllPaged(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value =  "size", defaultValue = "10") int size){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.findAll(page - 1, size));
 		} catch (Exception e) {
