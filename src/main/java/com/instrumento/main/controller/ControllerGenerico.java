@@ -51,6 +51,7 @@ public class ControllerGenerico <E, S extends IservicioGenerico<E>> {
 		
 	}
 	
+	
 	@GetMapping("/items")
 	@Transactional
 	public ResponseEntity<?> getCountOfItems() {
