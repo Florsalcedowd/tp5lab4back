@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +33,24 @@ import com.instrumento.main.service.UploadService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-
 @RequestMapping(path = "api/v1/instrumentos")
+@Transactional
 public class InstrumentoController extends ControllerGenerico<Instrumento, InstrumentoService>{
 	@Autowired
     private UploadService uploadFileService;
 	
 	private static final String fileBasePath = ".//src//main//resources//images//";
+
+	@GetMapping("/buscar")
+    public ResponseEntity<?> getAllFiltered(
+            @RequestParam(required = false) String filter) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(service.filterAll(filter));
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/images")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {

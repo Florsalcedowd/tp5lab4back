@@ -8,16 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Instrumento implements Serializable {
+public class Instrumento extends BaseEntity {
 
-	
-	
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
 	private String instrumento;
 	
 	private String marca;
@@ -49,15 +41,6 @@ public class Instrumento implements Serializable {
 		this.costoEnvio = costoEnvio;
 		this.cantidadVendida = cantidadVendida;
 		this.descripcion = descripcion;
-	}
-
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getInstrumento() {

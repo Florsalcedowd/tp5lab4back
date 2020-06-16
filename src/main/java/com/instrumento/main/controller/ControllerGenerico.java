@@ -2,6 +2,8 @@ package com.instrumento.main.controller;
 
 
 
+import com.instrumento.main.entities.BaseEntity;
+import com.instrumento.main.service.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +16,27 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.instrumento.main.service.IservicioGenerico;
+import com.instrumento.main.service.BaseService;
+
+import java.util.Map;
 
 
-
-
-public class ControllerGenerico <E, S extends IservicioGenerico<E>> {
+public class ControllerGenerico <E extends BaseEntity, S extends BaseServiceImpl<E, Integer>>{
 	
 	@Autowired	
 	protected S service;
+
+	@GetMapping("/allPaged")
+	public ResponseEntity<Map<String, Object>> getAll(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(service.findAll(page - 1, size));
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@GetMapping("/all")
 	@Transactional
@@ -39,41 +53,7 @@ public class ControllerGenerico <E, S extends IservicioGenerico<E>> {
 		}
 		
 	}
-	
-	@GetMapping("/count")
-	@Transactional
-	public ResponseEntity<?> getCountOfPages(@RequestParam(value =  "size", defaultValue = "10") int size) {
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(service.countPages(size));
-		} catch (Exception e) {
-			return null;
-		}
-		
-	}
-	
-	
-	@GetMapping("/items")
-	@Transactional
-	public ResponseEntity<?> getCountOfItems() {
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(service.countItems());
-		} catch (Exception e) {
-			return null;
-		}
-		
-	}
-	
-	@GetMapping("/")
-	@Transactional
-	public ResponseEntity<?> getAllPaged(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value =  "size", defaultValue = "10") int size){
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(service.findAll(page - 1, size));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("{\"Mi mensaje get todos\": \"" + e.getMessage() + "\"}");
-		}
-	}
-	
+
 	
 	@GetMapping("/{id}")
 	@Transactional
