@@ -23,8 +23,18 @@ import com.instrumento.main.repository.InstrumentoRepository;
 @Service
 public class InstrumentoService extends BaseServiceImpl<Instrumento, Integer> {
 
+    private String upload_folder = ".//src//main//resources//images//";
+
     public InstrumentoService(BaseRepository<Instrumento, Integer> baseRepository) {
         super(baseRepository);
+    }
+
+    public void saveFile(MultipartFile file) throws IOException {
+        if(!file.isEmpty()){
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(upload_folder + file.getOriginalFilename());
+            Files.write(path,bytes);
+        }
     }
 
     public List<Instrumento> filterAll(String filter) throws Exception {
@@ -39,5 +49,8 @@ public class InstrumentoService extends BaseServiceImpl<Instrumento, Integer> {
             throw new Exception(e.getMessage());
         }
     }
+
+
+
 
 }

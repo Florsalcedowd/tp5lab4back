@@ -62,6 +62,7 @@ public class InstrumentoController extends ControllerGenerico<Instrumento, Instr
             uploadFileService.saveFile(file);
         } catch (IOException e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"Error\": \""+e.getMessage()+"\"}");
         }
 
         return new ResponseEntity<Object>("Archivo subido correctamente", HttpStatus.OK);
